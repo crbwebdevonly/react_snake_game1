@@ -53,10 +53,8 @@ const SnakeGame = () => {
 	const [play, setPlay] = useState(false);
 	const [gameOver, setGameOver] = useState(null);
 	//============
-	// console.log(getAppleIndex(), "apple");
 	//============
 	//============
-	// console.log(generateInitialBoard(5));
 	//============
 	//============
 	//============
@@ -165,36 +163,11 @@ const SnakeGame = () => {
 		//4 if invalid handle gameover
 		// repeat
 		moveSnake();
-		// console.log(getAppleIndex(), "apple");
-		//
-		// checkAppleCollision();
 	};
 	//============
 	//============
 	//============
 	//============
-	const checkAppleCollision = (snakeBody) => {
-		// const { snakeBody } = snake;
-		let updatedSnakeBody = [...snakeBody];
-		let currentHeadIndex = snakeBody[0].index;
-		if (currentHeadIndex === appleIndex) {
-			console.log("apple eat__-----", appleIndex);
-			// handle eat apple --delete current apple index
-			// or set new index
-			// setAppleIndex(null);
-			let oldApple = appleIndex;
-			setAppleIndex(getAppleIndex());
-			setScore((p) => p + 1);
-
-			console.log(snakeBody, "old body");
-			console.log(updatedSnakeBody, "new body");
-			// updatedSnakeBody.unshift({ index: oldApple });
-			updatedSnakeBody.unshift({ index: getNewIndex() });
-			// console.log(updatedSnakeBody);
-			// setSnake({ ...snake, snakeBody: updatedSnakeBody });
-		}
-		return updatedSnakeBody;
-	};
 
 	//============
 	//============
@@ -215,28 +188,10 @@ const SnakeGame = () => {
 		const { snakeBody } = snake;
 		let updatedSnakeBody = [...snakeBody];
 
-		// let oldApple = appleIndex;
 		updatedSnakeBody.unshift({ index: getNewIndex() });
 		setSnake({ ...snake, snakeBody: updatedSnakeBody });
 		setAppleIndex(getAppleIndex());
 		setScore((p) => p + 1);
-
-		// let currentHeadIndex = snakeBody[0].index;
-
-		// if (currentHeadIndex === appleIndex) {
-		// 	console.log("apple eat__-----", appleIndex);
-		// 	// handle eat apple --delete current apple index
-		// 	// or set new index
-		// 	// setAppleIndex(null);
-
-		// 	console.log(snakeBody, "old body");
-		// 	console.log(updatedSnakeBody, "new body");
-		// 	// updatedSnakeBody.unshift({ index: oldApple });
-
-		// 	// console.log(updatedSnakeBody);
-		// 	//
-		// }
-		// return updatedSnakeBody;
 	};
 	//============
 	//============
@@ -256,7 +211,6 @@ const SnakeGame = () => {
 			return true;
 		};
 		do {
-			// console.log("doing");
 			newAppleIndex = Math.floor(Math.random() * totalCells);
 		} while (!isAppleIndexValid(newAppleIndex));
 
@@ -266,7 +220,6 @@ const SnakeGame = () => {
 	//============
 	//============
 	const handleButtonPressDown = ({ keyCode }) => {
-		// console.log(keyCode, isNaN(keyCode));
 		if (keyCode === 37) setDirection("left");
 		if (keyCode === 39) setDirection("right");
 		if (keyCode === 38) setDirection("up");
@@ -275,9 +228,7 @@ const SnakeGame = () => {
 	//============
 	//============
 	const moveSnake = () => {
-		// console.log("k1");
 		if (isSelfCollide()) {
-			// console.log("k2");
 			setGameOver(true);
 			return;
 		}
@@ -287,21 +238,13 @@ const SnakeGame = () => {
 			return;
 		}
 
-		// console.log("k3");
-		// snakeBody: [{ index: snakeHeadIndex }],
-
 		const { snakeBody } = snake;
 		let clonedSnakeBody = [...snakeBody];
-		// let clonedSnakeBody = checkAppleCollision(clonedSnakeBody_pre);
-		// if (clonedSnakeBody_pre !== clonedSnakeBody) return;
 		let currentHeadIndex = snakeBody[0].index;
-		//
-		// if (currentHeadIndex === appleIndex) return;
-		//
+
 		let tail = clonedSnakeBody.pop();
 		clonedSnakeBody.unshift(tail);
 		let newIndex = getNewIndex();
-		// console.log(isValidNewIndex(newIndex), "isvalid result");
 		if (!isValidNewIndex(newIndex)) {
 			setGameOver(true);
 			return;
@@ -316,26 +259,17 @@ const SnakeGame = () => {
 	const getNewIndex = () => {
 		const { snakeBody } = snake;
 		let newIndex = null;
-		// let clonedSnakeBody = [...snakeBody];
 		let currentHeadIndex = snakeBody[0].index;
 		if (direction === "left") {
-			// console.log("move left");
-			// setScore((p) => p - 1);
 			return (newIndex = currentHeadIndex - 1);
 		}
 		if (direction === "right") {
-			// console.log("move right");
-			// setScore((p) => p + 1);
 			return (newIndex = currentHeadIndex + 1);
 		}
 		if (direction === "up") {
-			// console.log("move up");
-			// setScore((p) => p + 1);
 			return (newIndex = currentHeadIndex - 10);
 		}
 		if (direction === "down") {
-			// console.log("move down");
-			// setScore((p) => p + 1);
 			return (newIndex = currentHeadIndex + 10);
 		}
 	};
@@ -343,25 +277,19 @@ const SnakeGame = () => {
 	//============
 	//============
 	const isValidNewIndex = (newIndex) => {
-		// console.log("isvalid>>", newIndex, direction);
-		// if (isSelfCollide(newIndex)) return false;
 		if (direction === "left") {
-			// console.log("case1");
 			if ((newIndex + 1) % NUM_CELLS_PER_ROW === 0) return false;
 			else return true;
 		}
 		if (direction === "right") {
-			// console.log("case2");
 			if (newIndex % NUM_CELLS_PER_ROW === 0) return false;
 			else return true;
 		}
 		if (direction === "up") {
-			// console.log("case3");
 			if (newIndex < 0) return false;
 			else return true;
 		}
 		if (direction === "down") {
-			// console.log("case4");
 			if (newIndex > totalCells) return false;
 			else return true;
 		} else return true;
@@ -371,54 +299,24 @@ const SnakeGame = () => {
 	//============
 	//============
 	const isSelfCollide = () => {
-		// console.count("--------start loop");
 		const { snakeBody } = snake;
-		// // let newIndex = null;
-		// let clonedSnakeBody = [...snakeBody];
-		// clonedSnakeBody.shift();
+
 		let currentHeadIndex = snakeBody[0].index;
-		// console.log("head>", currentHeadIndex);
 		let body = snakeBody.map((e) => e.index);
-		// console.log("ALLbody>>", body);
 		body.shift();
-		// body.pop();
-		// console.log("head-less-body>>", body);
 		if (body.includes(currentHeadIndex)) {
-			// console.count("--self collide-");
 			return true;
 		}
-		// let result = false;
-		// for (const e of clonedSnakeBody) {
-		// 	console.count("--------");
-		// 	console.log(e, "for");
-		// 	if (e.index === currentHeadIndex) {
-		// 		console.count("--self collide-");
-		// 		result = true;
-		// 	}
-		// }
-		// console.count("--------end loop");
-		// // clonedSnakeBody
 
-		// // for (const e of snake.snakeBody) {
-		// // 	console.log("check self >>new is ", newIndex);
-		// // 	console.log("check self", e.index, newIndex);
-		// // 	// if (e.index === newIndex) return true;
-		// // }
-		// return result;
 		return false;
 	};
 	//============
 	//============
 	//============
 	const updateBoard = () => {
-		// console.log(snake);
 		const { snakeBody } = snake;
-		// let clonedSnakeBody = [...snakeBody];
 		let currentHeadIndex = snakeBody[0].index;
-		// console.log(currentHeadIndex);
-		// console.log();
 		let newBoard = board.map((e, i) => {
-			// console.log(e);
 			e.cellType = "blank";
 			if (e.cellIndex === currentHeadIndex) {
 				e.cellType = "snakeHead";
@@ -436,7 +334,6 @@ const SnakeGame = () => {
 			});
 		}
 		newBoard[snakeBody[0].index].cellType = "snakeHead";
-		// console.log(newBoard, "<<new", board);
 		setBoard(newBoard);
 	};
 
